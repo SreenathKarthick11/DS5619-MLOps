@@ -40,6 +40,8 @@ def load_config(path):
 
     if (missed!=[]):
         raise ValueError("The following keys are missing in the config {missed}")
+    else:
+        return data
 
 
 def load_transactions(path, fmt):
@@ -83,8 +85,28 @@ def run_pipeline(config):
     n_high_value, high_value_threshold), and write them as JSON to
     config["output_path"]. Return the report dict as well.
     """
-    # TODO: implement
-    raise NotImplementedError("run_pipeline is not implemented yet")
+    rows=load_transactions(config['input_path'],config['input_format'])
+    n = len(rows)
+    total_amount = sum(float(r["amount"]) for r in rows)
+    if config['input_format']=='csv':
+        n_fraud = sum(1 for r in rows if r["is_fraud"].lower() == "true")
+    else:
+        n_fraud = sum(1 for r in rows if r["is_fraud"]==True)
+    n_high_value = sum(1 for r in rows if float(r["amount"]) > config['high_value_threshold'])
+
+    report = {
+            "n_transactions": n,
+            "total_amount": round(total_amount, 2),
+            "fraud_rate": round(n_fraud / n, 4) if n else 0.0,
+            "n_high_value": n_high_value,
+            "high_value_threshold": config['high_value_threshold'],
+        }
+
+    with open(config['output_path'], "w") as f:
+            json.dump(report, f, indent=2)
+
+    print(f"Wrote report to {config['output_path']}")
+    print(json.dumps(report, indent=2))
 
 
 def main():

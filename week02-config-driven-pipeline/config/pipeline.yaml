@@ -1,0 +1,6 @@
+# YAML file for pipeline test
+
+input_path: data/v1/transactions.json
+input_format: json          # csv | json
+high_value_threshold: 5000
+output_path: data/v1/report.json
