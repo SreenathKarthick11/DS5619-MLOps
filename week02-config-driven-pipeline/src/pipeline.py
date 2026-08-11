@@ -39,7 +39,7 @@ def load_config(path):
             missed.append(key)
 
     if (missed!=[]):
-        raise ValueError("The following keys are missing in the config {missed}")
+        raise ValueError(f"The following keys are missing in the config {missed}")
     else:
         return data
 
