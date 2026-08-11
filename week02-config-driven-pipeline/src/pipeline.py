@@ -41,8 +41,15 @@ def load_config(path):
         if key not in data.keys():
             missed.append(key)
 
+    none_keys=[]
+    for key in data.keys():
+        if data[key] is None:
+            none_keys.append(key)
+
     if (missed!=[]):
         raise ValueError(f"The following keys are missing in the config {missed}")
+    if (none_keys!=[]):
+            raise ValueError(f"The following keys have none values in the config {none_keys}")
     else:
         return data
 
@@ -109,7 +116,7 @@ def run_pipeline(config):
             json.dump(report, f, indent=2)
 
     print(f"Wrote report to {config['output_path']}")
-    print(json.dumps(report, indent=2))
+    # print(json.dumps(report, indent=2))
     return report
 
 
