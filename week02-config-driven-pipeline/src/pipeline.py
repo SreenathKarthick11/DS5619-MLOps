@@ -28,9 +28,10 @@ def load_config(path):
     # implemented
     try:
         with open(path,'r') as file:
-            data=yaml.safe_load(file)
+            data=yaml.load(file,Loader=yaml.SafeLoader)
     except Exception as e:
-        print("Error occured while loading config : {e}")
+        print(f"Error occured while loading config : {e}")
+        exit(1)
     
     missed=[]
     for key in REQUIRED_KEYS:
@@ -49,7 +50,25 @@ def load_transactions(path, fmt):
     (str or float) and "is_fraud" (str "True"/"False" or bool).
     Raise ValueError for any fmt other than "csv" or "json".
     """
-    # TODO: implement
+    if fmt not in ['csv','json']:
+        raise ValueError(f"{fmt} is not compatable")
+    if fmt == 'csv':
+        try:
+            with open(path,'r',newline="") as f:
+                data = csv.DictReader(f)
+                return list(data)
+        except Exception as e:
+            print(f"Error while loading csv , `check file path` : {e}")
+            exit(1)
+    else:
+        try:
+            with open(path,'r') as f:
+                data = json.load(f)
+                return data
+        except Exception as e:
+            print(f"Error while loading json , `check file path` : {e}")
+            exit(1)
+
     raise NotImplementedError("load_transactions is not implemented yet")
 
 
