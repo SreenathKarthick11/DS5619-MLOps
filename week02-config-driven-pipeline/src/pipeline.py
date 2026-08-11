@@ -35,7 +35,7 @@ def load_config(path):
 
     if data is None:
         data = {}
-        
+
     missed=[]
     for key in REQUIRED_KEYS:
         if key not in data.keys():
@@ -110,6 +110,7 @@ def run_pipeline(config):
 
     print(f"Wrote report to {config['output_path']}")
     print(json.dumps(report, indent=2))
+    return report
 
 
 def main():
