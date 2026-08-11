@@ -33,6 +33,9 @@ def load_config(path):
         print(f"Error occured while loading config : {e}")
         exit(1)
 
+    if data is None:
+        data = {}
+        
     missed=[]
     for key in REQUIRED_KEYS:
         if key not in data.keys():
