@@ -25,8 +25,20 @@ def load_config(path):
     Must raise ValueError naming the specific missing key if REQUIRED_KEYS
     are not all present. Do not let this fail with a bare KeyError later.
     """
-    # TODO: implement
-    raise NotImplementedError("load_config is not implemented yet")
+    # implemented
+    try:
+        with open(path,'r') as file:
+            data=yaml.safe_load(file)
+    except Exception as e:
+        print("Error occured while loading config : {e}")
+    
+    missed=[]
+    for key in REQUIRED_KEYS:
+        if key not in data.keys():
+            missed.append(key)
+
+    if (missed!=[]):
+        raise ValueError("The following keys are missing in the config {missed}")
 
 
 def load_transactions(path, fmt):
