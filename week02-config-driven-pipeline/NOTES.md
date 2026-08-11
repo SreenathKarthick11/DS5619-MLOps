@@ -1,8 +1,9 @@
 # NOTES.md — Week 2: Config-Driven Data Pipelines
 
 **Student ID used with `generate_for_student.py`:**
-student_id: 112301042
-seed: 843794033
+
+> student_id: 112301042 \
+> seed: 843794033
 
 
 ## What was hardcoded, and what would switching it have required?
