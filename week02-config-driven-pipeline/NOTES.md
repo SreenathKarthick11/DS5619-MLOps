@@ -8,9 +8,6 @@
 
 ## What was hardcoded, and what would switching it have required?
 
-<!-- What specifically was hardcoded in the original script, and what would
-     have had to happen to change the threshold or switch formats before
-     your refactor? -->
 
 In the original `pipeline_hardcoded.py`, several configuration values were hardcoded directly in the source code:
 
