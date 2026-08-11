@@ -103,6 +103,17 @@ output_path: data/v1/report.json
 EOF
 
 
+# ------------------------------------------------------------
+# 11. None value for key in YAML
+# ------------------------------------------------------------
+cat > "$TEST_DIR/none_key.yaml" <<EOF
+input_path: data/v1/transactions.csv
+input_format: csv
+high_value_threshold:
+output_path: data/v1/report.json
+EOF
+
+
 # ============================================================
 # Function to run one test
 # ============================================================
@@ -153,6 +164,7 @@ run_test "Empty YAML" "$TEST_DIR/empty.yaml"
 
 run_test "CSV file declared as JSON" "$TEST_DIR/csv_as_json.yaml"
 
+run_test "NO VALUE FOR THRESHOLD" "$TEST_DIR/none_key.yaml"
 
 echo
 echo "=========================================="
