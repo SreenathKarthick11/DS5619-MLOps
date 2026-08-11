@@ -18,7 +18,7 @@ def load_config(path):
     except Exception as e:
         print(f"Error occured while loading config : {e}")
         exit(1)
-    
+
     missed=[]
     for key in REQUIRED_KEYS:
         if key not in data.keys():
@@ -26,7 +26,7 @@ def load_config(path):
 
     if (missed!=[]):
         raise ValueError(f"The following keys are missing in the config {missed}")
-    
+
 
 
 def load_transactions(path, fmt):
@@ -39,8 +39,8 @@ def load_transactions(path, fmt):
     """
     if fmt not in ['csv','json']:
         raise ValueError(f"{fmt} is not compatable")
-    
-    if ('.'+fmt)!=Path(path).suffix:
+
+    if (fmt)!=Path(path).suffix[1:]:
         raise Exception(f"The format doesn't match for the file")
 
     if fmt == 'csv':
@@ -63,4 +63,4 @@ def load_transactions(path, fmt):
     raise NotImplementedError("load_transactions is not implemented yet")
 
 # load_config('/home2/mlops/Documents/Labs/week02-config-driven-pipeline/config/pipeline.example.yaml')
-print(load_transactions("/home2/mlops/Documents/Labs/week02-config-driven-pipeline/data/v1/transactions.json","csv"))
+print(load_transactions("/home/sreenath-karthick/Documents/MLOps/DS5619-MLOps/week02-config-driven-pipeline/data/v1/transactions.csv","csv"))

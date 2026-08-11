@@ -32,7 +32,7 @@ def load_config(path):
     except Exception as e:
         print(f"Error occured while loading config : {e}")
         exit(1)
-    
+
     missed=[]
     for key in REQUIRED_KEYS:
         if key not in data.keys():
@@ -53,9 +53,9 @@ def load_transactions(path, fmt):
     if fmt not in ['csv','json']:
         raise ValueError(f"{fmt} is not compatable")
 
-    if ('.'+fmt)!=Path(path).suffix:
+    if fmt!=Path(path).suffix[1:]:
         raise Exception(f"The format doesn't match for the file")
-        
+
 
     if fmt == 'csv':
         try:
@@ -74,7 +74,7 @@ def load_transactions(path, fmt):
             print(f"Error while loading json , `check file path` : {e}")
             exit(1)
 
-    
+
 
 
 def run_pipeline(config):
