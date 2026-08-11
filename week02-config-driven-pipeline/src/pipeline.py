@@ -13,7 +13,7 @@ Run with:
 import argparse
 import csv
 import json
-
+from pathlib import Path
 import yaml
 
 REQUIRED_KEYS = ["input_path", "input_format", "high_value_threshold", "output_path"]
@@ -52,6 +52,11 @@ def load_transactions(path, fmt):
     """
     if fmt not in ['csv','json']:
         raise ValueError(f"{fmt} is not compatable")
+
+    if ('.'+fmt)!=Path(path).suffix:
+        raise Exception(f"The format doesn't match for the file")
+        
+
     if fmt == 'csv':
         try:
             with open(path,'r',newline="") as f:

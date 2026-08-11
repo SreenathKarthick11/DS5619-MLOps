@@ -2,7 +2,7 @@ import yaml
 import csv
 import json
 import pprint
-
+from pathlib import Path
 REQUIRED_KEYS = ["input_path", "input_format", "high_value_threshold", "output_path"]
 
 
@@ -39,6 +39,10 @@ def load_transactions(path, fmt):
     """
     if fmt not in ['csv','json']:
         raise ValueError(f"{fmt} is not compatable")
+    
+    if ('.'+fmt)!=Path(path).suffix:
+        raise Exception(f"The format doesn't match for the file")
+
     if fmt == 'csv':
         try:
             with open(path,'r',newline="") as f:
@@ -59,4 +63,4 @@ def load_transactions(path, fmt):
     raise NotImplementedError("load_transactions is not implemented yet")
 
 # load_config('/home2/mlops/Documents/Labs/week02-config-driven-pipeline/config/pipeline.example.yaml')
-print(load_transactions("/home2/mlops/Documents/Labs/week02-config-driven-pipeline/data/v1/transactions.json","json"))
+print(load_transactions("/home2/mlops/Documents/Labs/week02-config-driven-pipeline/data/v1/transactions.json","csv"))
