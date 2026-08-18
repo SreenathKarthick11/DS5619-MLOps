@@ -128,7 +128,7 @@ run_test() {
     echo "CONFIG: $CONFIG"
     echo "------------------------------------------"
 
-    python "$PIPELINE" --config "$CONFIG"
+    python3 "$PIPELINE" --config "$CONFIG"
 
     STATUS=$?
 
