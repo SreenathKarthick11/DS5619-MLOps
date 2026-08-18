@@ -1,7 +1,37 @@
 {
   "n_violations": 8,
-  "Expected column not null": "count: 3 , row_indexs ['209', '237', '234']",
-  "Expected column positive": "count: 3 , row_indexs ['209', '237', '493']",
-  "Expected column in set": "count: 1 , row_indexs ['361']",
-  "Expected column unique": "count: 1 , row_indexs ['254']"
+  "expectations": [
+    {
+      "expectation": "expect_column_not_null",
+      "n_violations": 3,
+      "row_indices": [
+        209,
+        237,
+        234
+      ]
+    },
+    {
+      "expectation": "expect_column_positive",
+      "n_violations": 3,
+      "row_indices": [
+        209,
+        237,
+        493
+      ]
+    },
+    {
+      "expectation": "expect_column_in_set",
+      "n_violations": 1,
+      "row_indices": [
+        361
+      ]
+    },
+    {
+      "expectation": "expect_column_unique",
+      "n_violations": 1,
+      "row_indices": [
+        254
+      ]
+    }
+  ]
 }

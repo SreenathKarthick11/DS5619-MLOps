@@ -25,11 +25,10 @@ def _is_null(value):
 def expect_column_not_null(rows, column):
     """Return a Violation for every row where rows[i][column] is null/empty."""
     vio_objs=[]
-    # VERIFY: implement
     for i in range(len(rows)):
         if _is_null(rows[i][column]):
-            vio_objs.append(Violation("expect_column_not_null",str(column),str(i),f"The value present needs to be not null, at {i}th row and {column}th column"))
-    
+            vio_objs.append(Violation("expect_column_not_null",str(column),i,f"The value present needs to be not null, at {i}th row and {column}th column"))
+
     return vio_objs
 
 def try_cast_float(val):
@@ -37,7 +36,7 @@ def try_cast_float(val):
         float(val)
         return True
     except (ValueError, TypeError):
-        return False 
+        return False
 
 def expect_column_positive(rows, column):
     """Return a Violation for every row where rows[i][column], cast to float,
@@ -45,12 +44,11 @@ def expect_column_positive(rows, column):
     all, that also counts as a violation (detail should say so).
     """
     vio_objs=[]
-    # VERIFY: implement
     for i in range(len(rows)):
         if (not try_cast_float(rows[i][column])):
-            vio_objs.append(Violation("expect_column_positive",str(column),str(i),f"The value present needs to be casted to float, at {i}th row and {column}th column"))
+            vio_objs.append(Violation("expect_column_positive",str(column),i,f"The value present needs to be casted to float, at {i}th row and {column}th column"))
         elif (float(rows[i][column]) <= 0):
-            vio_objs.append(Violation("expect_column_positive",str(column),str(i),f"The value present needs to be strictly positive, at {i}th row and {column}th column"))
+            vio_objs.append(Violation("expect_column_positive",str(column),i,f"The value present needs to be strictly positive, at {i}th row and {column}th column"))
 
     return vio_objs
 
@@ -59,12 +57,11 @@ def expect_column_in_set(rows, column, allowed_values):
     """Return a Violation for every row where rows[i][column] is not a member
     of allowed_values (a set or list you're given).
     """
-    # VERIFY: implement
     vio_objs=[]
     for i in range(len(rows)):
         if (rows[i][column] not in allowed_values):
-            vio_objs.append(Violation("expect_column_in_set",str(column),str(i),f"The value present needs to be present in allowed set of values , at {i}th row and {column}th column"))
-    
+            vio_objs.append(Violation("expect_column_in_set",str(column),i,f"The value present needs to be present in allowed set of values , at {i}th row and {column}th column"))
+
     return vio_objs
 
 def expect_column_unique(rows, column):
@@ -72,12 +69,11 @@ def expect_column_unique(rows, column):
     already seen in `column`. (i.e. if three rows share a value, rows 2 and 3
     are violations; row 1 is not.)
     """
-    # VERIFY: implement
     vio_objs=[]
     seen = set()
     for i in range(len(rows)):
         if (rows[i][column] in seen):
-            vio_objs.append(Violation("expect_column_unique",str(column),str(i),f"The value present needs to be unique, at {i}th row and {column}th column"))
+            vio_objs.append(Violation("expect_column_unique",str(column),i,f"The value present needs to be unique, at {i}th row and {column}th column"))
         else:
             seen.add(rows[i][column])
 
