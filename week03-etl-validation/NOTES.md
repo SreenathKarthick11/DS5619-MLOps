@@ -1,7 +1,8 @@
 # NOTES.md — Week 3: ETL and Data Validation
 
 **Student ID used with `generate_for_student.py`:**
-<!-- paste the --student-id value you used -->
+- student_id: 112301042
+- seed: 466663220
 
 
 ## Quarantine count vs. the 7 known injected problems
