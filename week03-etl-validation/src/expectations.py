@@ -49,7 +49,7 @@ def expect_column_positive(rows, column):
     for i in range(len(rows)):
         if (not try_cast_float(rows[i][column])):
             vio_objs.append(Violation("expect_column_positive",str(column),str(i),f"The value present needs to be casted to float, at {i}th row and {column}th column"))
-        if (float(rows[i][column]) > 0):
+        elif (float(rows[i][column]) <= 0):
             vio_objs.append(Violation("expect_column_positive",str(column),str(i),f"The value present needs to be strictly positive, at {i}th row and {column}th column"))
 
     return vio_objs
@@ -79,6 +79,6 @@ def expect_column_unique(rows, column):
         if (rows[i][column] in seen):
             vio_objs.append(Violation("expect_column_unique",str(column),str(i),f"The value present needs to be unique, at {i}th row and {column}th column"))
         else:
-            seen.insert(rows[i][column])
+            seen.add(rows[i][column])
 
     return vio_objs

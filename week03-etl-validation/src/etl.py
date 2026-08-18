@@ -43,6 +43,32 @@ def extract(input_path):
         return list(csv.DictReader(f))
 
 
+def write_csv(output,rows):
+    if not rows:
+        return ValueError("No rows to write")
+    fieldnames=list(rows[0].keys())
+    with open(output,mode='w',newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader() 
+        writer.writerows(rows)
+
+def report_gen(vio_objs):
+    Total_violations=len(vio_objs)
+    violation={"expect_column_not_null":0,"expect_column_positive":0,"expect_column_in_set":0,"expect_column_unique":0}
+    violation_ids={"expect_column_not_null":[],"expect_column_positive":[],"expect_column_in_set":[],"expect_column_unique":[]}
+    for v in vio_objs:
+        violation[v.expectation]+=1
+        violation_ids[v.expectation].append(v.row_index)
+    
+    return {
+        "n_violations" : Total_violations,
+        "Expected column not null" : f"count: {violation['expect_column_not_null']} , row_indexs {violation_ids['expect_column_not_null']}",
+        "Expected column positive" : f"count: {violation['expect_column_positive']} , row_indexs {violation_ids['expect_column_positive']}",
+        "Expected column in set"   : f"count: {violation['expect_column_in_set']} , row_indexs {violation_ids['expect_column_in_set']}",
+        "Expected column unique"   : f"count: {violation['expect_column_unique']} , row_indexs {violation_ids['expect_column_unique']}",
+    }
+    
+
 def run_etl(config):
     """Implement the four ETL steps described in ASSIGNMENT.md:
     extract, validate (run every expectation in build_expectation_suite()
@@ -53,8 +79,36 @@ def run_etl(config):
 
     Return the validation_report dict as well as writing it to disk.
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY: implement
+    rows = extract(config["input_path"])
+    exp_suite=build_expectation_suite()
+    vio_objs=[]
+    for fn, args in exp_suite:
+        vio_objs.extend(fn(rows,**args))
+    
+    violated_indexs=set()
+    for v in vio_objs:
+        violated_indexs.add(v.row_index)
+
+
+    violated_rows=[]
+    clean_rows=[]
+    for i in range(len(rows)):
+        if str(i) not in violated_indexs:
+            clean_rows.append(rows[i])
+        else:
+            violated_rows.append(rows[i])
+
+    write_csv(config["clean_output_path"],clean_rows)
+    write_csv(config["quarantine_output_path"],violated_rows)
+
+    report = report_gen(vio_objs)
+
+    with open(config['report_output_path'], "w") as f:
+            json.dump(report, f, indent=2)
+            
+    return report
+
 
 
 def main():
