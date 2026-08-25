@@ -11,3 +11,7 @@
 **Week 3** : Data Sources & Foramt,ETL/ELT,Data Validation & Quality
 - Lab work : ETL and Data validation
 - Refer    : [Lab details](week03-etl-validation/README.md)
+
+**Week 4** : Data Engineering Lifecycle, Versioning, Feature Stores & Lineage
+- Lab work : Versioning, Feature Store & Lineage
+- Refer    : [Lab details](week04-versioning-feature-store/README.md)
