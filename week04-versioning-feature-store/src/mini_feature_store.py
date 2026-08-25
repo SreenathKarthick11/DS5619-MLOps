@@ -20,6 +20,7 @@ import hashlib
 import json
 import os
 from datetime import datetime, timezone
+from pathlib import Path
 
 
 def _now():
@@ -77,8 +78,46 @@ def snapshot_raw_version(input_path, registry_dir):
            CSV header), row_count, created_at (use _now()).
       5. Return the version_id (str).
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY:
+    input_path=Path(input_path)
+    registry_dir=Path(registry_dir)
+    hash_p=content_hash(input_path)
+    raw_version_dir_path=registry_dir/"raw_versions"
+
+    if not raw_version_dir_path.is_dir():
+        raise Exception(f"The path is not for raw_versions directory : {raw_version_dir_path}")
+    
+    for path in raw_version_dir_path.iterdir():
+        if path.is_dir():
+            manfist_json_path=path / "manifest.json"
+            if manfist_json_path.exists():
+                with open(manfist_json_path,'r') as f:
+                    data=json.load(f)
+                    if data.get('content_hash')==hash_p:
+                        return data['version_id']
+    
+    new_version_id=_next_version_id(raw_version_dir_path)
+    
+    rows=_read_csv_rows(input_path)
+    columns=list(rows[0].keys()) if rows else []
+    new_version_dir = raw_version_dir_path / new_version_id
+
+    new_version_dir.mkdir(parents=True,exist_ok=True)
+
+    manifest_data={
+        'version_id':new_version_id,
+        'source_path':str(input_path.resolve()),
+        'content_hash':hash_p,
+        'columns':columns,
+        'row_count':len(rows),
+        'created_at':_now()
+    }
+
+    with open(new_version_dir/"manifest.json",'r') as f:
+        json.dump(manifest_data,f,indent=2)
+
+    return new_version_id
+
 
 
 # ---------------------------------------------------------------------------
@@ -110,9 +149,57 @@ def build_features(rows):
 
     Return: list of feature row dicts, one per card_id, in any order.
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY:
+    if not rows:
+        return []
+    
+    columns=list(rows[0].keys()) if rows else []
 
+    is_V1= ('country' in columns)
+    is_V2=not is_V1
+
+    card_data={}
+    for row in rows:
+      card_id=row['card_id']
+
+      if card_id not in card_data:
+          card_data[card_id]={
+              'txn_count':0,
+              'avg_amount':0.0,
+              'max_amount':0.0,
+              'pct_card_present':0.0,
+              'event_time':""
+          }
+      
+      else:
+          
+          if is_V1:
+              amount=row['amount']
+          if is_V2:
+              amount=row['amount_minor_units']/100.0
+
+          card_present=1 if (row['card_present']=="True") else 0
+          
+          card_data[card_id]['avg_amount']=(card_data[card_id]['avg_amount']*card_data[card_id]['txn_count']+amount)/(card_data[card_id]['txn_count']+1)
+          card_data[card_id]['max_amount']=max(card_data[card_id]['max_amount'],amount)
+          card_data[card_id]['pct_card_present']=(card_data[card_id]['pct_card_present']*card_data[card_id]['txn_count'] + card_present)/(card_data[card_id]['txn_count']+1)
+          card_data[card_id]['txn_count']+=1
+          card_data[card_id]['event_time']=max(card_data[card_id]['event_time'],row['timestamp'])
+          
+    ### Build [{},{}] 
+    feature_list=[]
+    for card_id,data in card_data:
+        formated_card={
+            'card_id':card_id,
+            'txn_count':card_data['txn_count'],
+            'avg_count':round(card_data['avg_amount'],2),
+            'max_count':round(card_data['max_amount'],2),
+            'pct_card_present':round(card_data['pct_card_present'],3),
+            'event_time':card_data['event_time']
+        }
+        feature_list.append(formated_card)
+      
+    return feature_list
 
 # ---------------------------------------------------------------------------
 # Part 3 — Feature group registration (this IS the lineage record)
