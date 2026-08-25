@@ -78,7 +78,7 @@ def snapshot_raw_version(input_path, registry_dir):
            CSV header), row_count, created_at (use _now()).
       5. Return the version_id (str).
     """
-    # VERIFY:
+
     input_path=Path(input_path)
     registry_dir=Path(registry_dir)
     hash_p=content_hash(input_path)
@@ -148,7 +148,6 @@ def build_features(rows):
 
     Return: list of feature row dicts, one per card_id, in any order.
     """
-    # VERIFY:
 
     if not rows:
         return []
@@ -233,7 +232,7 @@ def register_feature_group(name, feature_rows, source_version_id, registry_dir, 
            created_at (use _now()).
       5. Return fg_version_id (str).
     """
-    # VERIFY: implement
+
     registry_dir = Path(registry_dir)
 
     feature_group_dir = registry_dir / "feature_groups" / name
@@ -282,7 +281,7 @@ def get_lineage(name, fg_version_id, registry_dir):
     FileNotFoundError (the default behavior of open() on a missing file is
     fine — don't catch it) if either manifest is missing.
     """
-    # VERIFY: implement
+
     registry_dir = Path(registry_dir)
     fg_manifest_path = registry_dir/ "feature_groups"/ name/ fg_version_id/ "manifest.json"
 
