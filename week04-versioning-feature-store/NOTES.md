@@ -26,3 +26,6 @@ Here are the link to the `manifest.json` of the raw versions
 Therefore, `build_features()` divides `amount_minor_units` by **100** before performing aggregation. This ensures that `avg_amount` and `max_amount` are calculated using the **same scale** in both versions. Without this conversion, v2 amounts would be 100 times larger, causing the generated features to be incorrect and making v1 and v2 feature values **not comparable**.
 
 
+> For detailed implementation refer :
+ [README_NOTES](README_NOTES.md)
+
