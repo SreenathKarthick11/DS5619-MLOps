@@ -84,8 +84,7 @@ def snapshot_raw_version(input_path, registry_dir):
     hash_p=content_hash(input_path)
     raw_version_dir_path=registry_dir/"raw_versions"
 
-    if not raw_version_dir_path.is_dir():
-        raise Exception(f"The path is not for raw_versions directory : {raw_version_dir_path}")
+    raw_version_dir_path.mkdir(parents=True, exist_ok=True)
 
     for path in raw_version_dir_path.iterdir():
         if path.is_dir():
