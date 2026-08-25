@@ -86,7 +86,7 @@ def snapshot_raw_version(input_path, registry_dir):
 
     if not raw_version_dir_path.is_dir():
         raise Exception(f"The path is not for raw_versions directory : {raw_version_dir_path}")
-    
+
     for path in raw_version_dir_path.iterdir():
         if path.is_dir():
             manfist_json_path=path / "manifest.json"
@@ -95,9 +95,9 @@ def snapshot_raw_version(input_path, registry_dir):
                     data=json.load(f)
                     if data.get('content_hash')==hash_p:
                         return data['version_id']
-    
+
     new_version_id=_next_version_id(raw_version_dir_path)
-    
+
     rows=_read_csv_rows(input_path)
     columns=list(rows[0].keys()) if rows else []
     new_version_dir = raw_version_dir_path / new_version_id
@@ -111,9 +111,9 @@ def snapshot_raw_version(input_path, registry_dir):
         'columns':columns,
         'row_count':len(rows),
         'created_at':_now()
-    }
+        }
 
-    with open(new_version_dir/"manifest.json",'r') as f:
+    with open(new_version_dir/"manifest.json",'w') as f:
         json.dump(manifest_data,f,indent=2)
 
     return new_version_id
@@ -150,56 +150,63 @@ def build_features(rows):
     Return: list of feature row dicts, one per card_id, in any order.
     """
     # VERIFY:
+
     if not rows:
         return []
-    
-    columns=list(rows[0].keys()) if rows else []
 
-    is_V1= ('country' in columns)
-    is_V2=not is_V1
+    is_v1 = "country" in rows[0]
+    is_v2 = "country_code" in rows[0]
 
-    card_data={}
+    card_data = {}
+
     for row in rows:
-      card_id=row['card_id']
+        card_id = row["card_id"]
 
-      if card_id not in card_data:
-          card_data[card_id]={
-              'txn_count':0,
-              'avg_amount':0.0,
-              'max_amount':0.0,
-              'pct_card_present':0.0,
-              'event_time':""
-          }
-      
-      else:
-          
-          if is_V1:
-              amount=row['amount']
-          if is_V2:
-              amount=row['amount_minor_units']/100.0
+        # Normalize amount into the same unit
+        if is_v1:
+            amount = float(row["amount"])
+        elif is_v2:
+            amount = int(row["amount_minor_units"]) / 100.0
+        else:
+            raise ValueError("Unknown transaction schema")
 
-          card_present=1 if (row['card_present']=="True") else 0
-          
-          card_data[card_id]['avg_amount']=(card_data[card_id]['avg_amount']*card_data[card_id]['txn_count']+amount)/(card_data[card_id]['txn_count']+1)
-          card_data[card_id]['max_amount']=max(card_data[card_id]['max_amount'],amount)
-          card_data[card_id]['pct_card_present']=(card_data[card_id]['pct_card_present']*card_data[card_id]['txn_count'] + card_present)/(card_data[card_id]['txn_count']+1)
-          card_data[card_id]['txn_count']+=1
-          card_data[card_id]['event_time']=max(card_data[card_id]['event_time'],row['timestamp'])
-          
-    ### Build [{},{}] 
-    feature_list=[]
-    for card_id,data in card_data:
-        formated_card={
-            'card_id':card_id,
-            'txn_count':card_data['txn_count'],
-            'avg_count':round(card_data['avg_amount'],2),
-            'max_count':round(card_data['max_amount'],2),
-            'pct_card_present':round(card_data['pct_card_present'],3),
-            'event_time':card_data['event_time']
-        }
-        feature_list.append(formated_card)
-      
-    return feature_list
+        card_present = row["card_present"] == "True"
+
+        if card_id not in card_data:
+            card_data[card_id] = {
+                "amounts": [],
+                "card_present_count": 0,
+                "event_time": row["timestamp"]
+            }
+
+        data = card_data[card_id]
+
+        data["amounts"].append(amount)
+
+        if card_present:
+            data["card_present_count"] += 1
+
+        data["event_time"] = max(
+            data["event_time"],
+            row["timestamp"]
+        )
+
+    feature_rows = []
+
+    for card_id, data in card_data.items():
+        amounts = data["amounts"]
+        txn_count = len(amounts)
+
+        feature_rows.append({
+            "card_id": card_id,
+            "txn_count": txn_count,
+            "avg_amount": round(sum(amounts) / txn_count, 2),
+            "max_amount": round(max(amounts), 2),
+            "pct_card_present": round(data["card_present_count"] / txn_count,3),
+            "event_time": data["event_time"]
+        })
+
+    return feature_rows
 
 # ---------------------------------------------------------------------------
 # Part 3 — Feature group registration (this IS the lineage record)
@@ -227,8 +234,35 @@ def register_feature_group(name, feature_rows, source_version_id, registry_dir, 
            created_at (use _now()).
       5. Return fg_version_id (str).
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY: implement
+    registry_dir = Path(registry_dir)
+
+    feature_group_dir = registry_dir / "feature_groups" / name
+
+    fg_version_id = _next_version_id(str(feature_group_dir))
+
+    version_dir = feature_group_dir / fg_version_id
+    version_dir.mkdir(parents=True, exist_ok=True)
+
+    with open(version_dir / "features.json", "w") as f:
+        json.dump(feature_rows, f, indent=2)
+
+    schema = sorted(feature_rows[0].keys()) if feature_rows else []
+
+    manifest = {
+        "feature_group_version_id": fg_version_id,
+        "name": name,
+        "source_raw_version_id": source_version_id,
+        "transform_version": transform_version,
+        "schema": schema,
+        "row_count": len(feature_rows),
+        "created_at": _now()
+    }
+
+    with open(version_dir / "manifest.json", "w") as f:
+        json.dump(manifest, f, indent=2)
+
+    return fg_version_id
 
 
 # ---------------------------------------------------------------------------
@@ -249,5 +283,21 @@ def get_lineage(name, fg_version_id, registry_dir):
     FileNotFoundError (the default behavior of open() on a missing file is
     fine — don't catch it) if either manifest is missing.
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY: implement
+    registry_dir = Path(registry_dir)
+    fg_manifest_path = registry_dir/ "feature_groups"/ name/ fg_version_id/ "manifest.json"
+
+    with open(fg_manifest_path, "r") as f:
+        feature_group_manifest = json.load(f)
+
+    raw_version_id = feature_group_manifest["source_raw_version_id"]
+
+    raw_manifest_path = registry_dir/ "raw_versions"/ raw_version_id/ "manifest.json"
+
+    with open(raw_manifest_path, "r") as f:
+        raw_manifest = json.load(f)
+
+    return {
+        "feature_group": feature_group_manifest,
+        "raw_source": raw_manifest
+    }
