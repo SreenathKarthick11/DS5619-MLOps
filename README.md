@@ -16,3 +16,8 @@
 - Lab work : Versioning, Feature Store & Lineage
 - Refer    : [Lab details](week04-versioning-feature-store/README.md)
 - Implementation : [Tasks implementation](week04-versioning-feature-store/README_NOTES.md)
+
+**Week 5** : Model Registry & Goverence
+- Lab work : Model Registry Governance
+- Refer    : [Lab details](week05-model-registry/README.md)
+- Implementation : [Task implementation](week05-model-registry/README_NOTES.md)
