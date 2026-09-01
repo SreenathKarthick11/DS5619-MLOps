@@ -1,8 +1,11 @@
 # NOTES.md — Week 5: Model Registry Governance
 
 **Student ID used with `generate_for_student.py`:**
-<!-- paste the --student-id value you used -->
 
+student_id: 112301042
+seed: 2217275315
+candidate_a: f1=0.518 (below 0.70 bar)
+candidate_b: f1=0.932 (clears 0.70 bar)
 
 ## Which candidate reached Production, and why?
 
