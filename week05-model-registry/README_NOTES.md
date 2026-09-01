@@ -114,4 +114,4 @@ The complete pipeline can be run with:
 python src/run_pipeline.py
 ```
 
-The pipeline produces the model registry and `registry_summary.json`, showing which model is currently in Production. So in our case it would be candidate B.
+The pipeline produces the model registry and `registry_summary.json`, showing which model is currently in Production. So in our case it would be `candidate B`.
