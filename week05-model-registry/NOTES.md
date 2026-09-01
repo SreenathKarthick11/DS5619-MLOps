@@ -30,4 +30,8 @@ We could add a **training date/timestamp** to the model's manifest. During promo
      register_model/promote_model design would need to change (or
      genuinely wouldn't) to gate 40 instead of 2? -->
 
-The basic `register_model` and `promote_model` design would remain the same. All 40 candidates can be registered as separate versions (`v1`, `v2`, ..., `v40`), each with its own metrics and model card. The same Production gates can then be applied to every candidate. The main change would be **automating the evaluation and selection process**, so the best candidate that satisfies all governance requirements can be promoted efficiently.
+The current design does not need major changes if the number of candidates increases from 2 to 40.`register_model()` already creates a separate version for each registered model, so all 40 candidates can be stored as different versions.`promote_model()` applies the same governance checks to each version independently.
+
+The main change would be in the pipeline or selection process: instead of manually checking two candidates, it would need to evaluate all candidates and decide which one should be promoted.
+
+The registry itself can therefore handle many candidates without needing a separate implementation for each one.

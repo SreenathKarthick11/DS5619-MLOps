@@ -1,15 +1,15 @@
 {
   "name": "fraud-detector",
   "version_id": "v1",
-  "intended_use": "The model is a fraud transactions detection model (based amount threshold,like amount threshold classifier). The intented users are the banking and online payments systems.",
-  "training_data": "The model is trained on card_id and max_amount from [card_id,transaction count,avg_amount,max_amount,% card present and event time]. It only covers the max amount from a transactions under a card, it doesn;t considers the distribution of the transcations made by the card.",
-  "limitations": "It doesn't consider the cumulative transactions to be fraudulent. A card could have multiple small transaction less than threshold, in a short duration of time to by pass the amount-threshold classifier. Hence the model cannot be trusted.",
-  "ethical_considerations": "the cost of a false positive here (a legitimate transaction blocked) leads to customers loosing confidence with the banking system, they might what to move to new vendor. And in false negetive case, where a fraudulent transactions takes place the customers looses there money. The banks needs to held accountable on how the classify and handle these cases.",
+  "intended_use": "The model is used for detecting fraudulent transactions based on an amount threshold, similar to an amount threshold classifier. The intended users are banks and online payment systems.",
+  "training_data": "The model is trained using card_id and max_amount from [card_id, transaction count, avg_amount, max_amount, % card present, and event time]. It mainly looks at the maximum amount of transactions made by a card and does not consider the overall distribution of the transactions made by the card.",
+  "limitations": "The model does not consider multiple transactions together when detecting fraud. A card could make multiple small transactions, each below the threshold, within a short period of time and bypass the amount threshold classifier. Because of this, the model cannot be fully trusted on its own for fraud detection.",
+  "ethical_considerations": "A false positive, where a legitimate transaction is blocked, can make customers lose confidence in the banking system and may make them move to another service provider. In the case of a false negative, where a fraudulent transaction is not detected, the customer may lose money. Banks need to be responsible for how they classify and handle these cases.",
   "metrics": {
     "precision": 0.577,
     "recall": 0.47,
     "f1": 0.518,
     "auc": 0.626
   },
-  "created_at": "2026-09-01T05:30:38.220490+00:00"
+  "created_at": "2026-09-01T09:12:27.482647+00:00"
 }
