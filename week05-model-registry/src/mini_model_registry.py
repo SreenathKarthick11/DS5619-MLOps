@@ -68,7 +68,7 @@ def register_model(name, model_path, metrics, registry_dir):
            created_at (use _now()).
       5. Return version_id (str).
     """
-    # VERIFY: implement
+    # implemented
     version_id = _next_version_id(os.path.join(registry_dir, "models", name))
     model_dir = _model_dir(registry_dir, name, version_id)
     os.makedirs(model_dir, exist_ok=True)
@@ -115,7 +115,7 @@ def generate_model_card(name, version_id, card_fields, registry_dir):
          card_fields, metrics (from step 2), created_at (use _now()).
       4. Return the path you wrote to.
     """
-    # VERIFY: implement
+    # implemented
     for field in REQUIRED_CARD_FIELDS:
         value = card_fields.get(field)
         if value is None or not str(value).strip():
@@ -172,7 +172,7 @@ def promote_model(name, version_id, target_stage, registry_dir):
       3. Write the updated manifest.json back to disk.
       4. Return the updated manifest (dict).
     """
-    # VERIFY: implement
+    # implemented
     model_dir = _model_dir(registry_dir, name, version_id)
     manifest_path = os.path.join(model_dir, "manifest.json")
     with open(manifest_path) as f:
@@ -227,7 +227,7 @@ def get_production_model(name, registry_dir):
 
     Return None if no version is currently in Production.
     """
-    # VERIFY: implement
+    # implemented
     models_dir = os.path.join(registry_dir, "models", name)
     if not os.path.isdir(models_dir):
         return None
