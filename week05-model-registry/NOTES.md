@@ -9,7 +9,8 @@ candidate_b: f1=0.932 (clears 0.70 bar)
 
 ## Which candidate reached Production, and why?
 
-<!-- Which candidate ended up in Production, and why? -->
+The `candidate b` which was registered as `v2` reached production as , it had a f1 score (0.932) , which is greater than required production limit of 0.7.
+Hence it was promoted to the production.
 
 
 ## Gating stale feature data
@@ -17,6 +18,7 @@ candidate_b: f1=0.932 (clears 0.70 bar)
 <!-- What would you need to add to promote_model's gate if you also wanted
      to block promotion of a model trained on stale (e.g. >30-day-old)
      feature data? -->
+We could have date on trained on key, which currently stores the feature store it used to train. By having a specify parameter like trainind date . which help us to block promoting models trained on stale data.
 
 
 ## Scaling the gate to 40 candidates
