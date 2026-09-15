@@ -2,7 +2,8 @@
 
 **Student ID used with `generate_for_student.py`:**
 <!-- paste the --student-id value you used -->
-Student_id : 112301042
+student_id: 112301042
+seed: 2894764793
 
 ## Built image size
 
@@ -22,5 +23,5 @@ week6-detector   latest    9093f58208a7   16 minutes ago   157MB
 > [!QUESTION] QUESTION
  What's the single biggest thing you'd change about this Dockerfile if
 `src/mock_detector.py` were swapped for a real torch-based checkpoint?
-(Think about what that does to build time and image size.) 
+(Think about what that does to build time and image size.)
 
