@@ -13,7 +13,7 @@ built image ID/tag):
 ```bash
 $ docker build -t week6-detector .
  => => writing image sha256:9093f58208a790a419d02ca58bcf96fecf7ff1f312b07795a11b9b22b8b19613                                                                                             0.0s
- => => naming to docker.io/library/week6-detector  
+ => => naming to docker.io/library/week6-detector
 ```
 
 ## Run
@@ -42,9 +42,10 @@ $ curl http://localhost:8080/health
 {"status":"ok"}
 
 $ curl -F "image=@data/fixtures/camera_A_daylight/000.jpg" http://localhost:8080/detect
-{"count":4,"detections":[{"bbox":[53,7,41,18],"category_id":10,"id":0,"image_id":0,"score":0.98},{"bbox":[189,67,26,16],"category_id":10,"id":1,"image_id":0,"score":0.98},{"bbox":[101,144,26,22],"category_id":12,"id":2,"image_id":0,"score":0.98},{"bbox":[170,161,39,12],"category_id":6,"id":3,"image_id":0,"score":0.98}]}
+{"count":3,"detections":[{"bbox":[162,51,40,11],"category_id":6,"id":0,"image_id":0,"score":0.98},{"bbox":[238,135,18,18],"category_id":2,"id":1,"image_id":0,"score":0.98},{"bbox":[184,138,31,23],"category_id":13,"id":2,"image_id":0,"score":0.98}]}
+
 ```
 
 ## Screenshot for reference
 
-![Screenshot](screenshot_lab6.png)
+![Screenshot](lab6_screenshot.png)
