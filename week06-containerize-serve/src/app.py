@@ -35,7 +35,7 @@ def load_image_from_upload(file_storage):
     (uploaded images may be non-RGB, e.g. RGBA or palette mode, and the
     detector expects RGB pixel tuples).
     """
-    # VERIFY: implement
+    # implemented
     raw_bytes = file_storage.read()
     image =  Image.open(io.BytesIO(raw_bytes)).convert("RGB")
     return image
@@ -52,7 +52,7 @@ def run_detection(image):
     (image_id=0 is fine — this endpoint handles one image per request, it
     doesn't need a real dataset-wide id.)
     """
-    # VERIFY: implement
+    # implemented
     detect_obj_list = det.detect(image)
     return {
         "count":len(detect_obj_list),
@@ -69,7 +69,7 @@ def create_app():
 
     @app.post("/detect")
     def detect():
-        """VERIFY: wire this up.
+        """ wire this up.
 
         - If request.files does not contain a file under the key "image",
           return (jsonify({"error": "missing 'image' file field"}), 400).
@@ -77,10 +77,11 @@ def create_app():
           run_detection(...) on it, and return jsonify(<that result>) with
           the default 200 status.
         """
-        # VERIFY: implement
+        # implemented
         if "image" not in request.files:
             return (jsonify({"error": "missing 'image' file field"}), 400)
-        img=load_image_from_upload(request.files['image'])
+        
+        img=load_image_from_upload(request.files["image"])
         res=run_detection(img)
         return (jsonify(res),200)
     
