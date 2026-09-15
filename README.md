@@ -21,3 +21,8 @@
 - Lab work : Model Registry Governance
 - Refer    : [Lab details](week05-model-registry/README.md)
 - Implementation : [Task implementation](week05-model-registry/README_NOTES.md)
+
+**Week 6** : Containerization and Virtualization
+- Lab work : Containerizie and Serve a Detector
+- Refer    : [Lab details](week06-containerize-serve/README.pdf)
+- Implementation :[Task implementation](week06-containerize-serve/README_NOTES.md)

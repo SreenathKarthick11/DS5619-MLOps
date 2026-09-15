@@ -1,4 +1,4 @@
-# Lab 6 - Containerize and Serve
+# Lab 6 - Containerize and Serve a Detector
 
 ## Overview
 
