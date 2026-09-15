@@ -48,4 +48,4 @@ $ curl -F "image=@data/fixtures/camera_A_daylight/000.jpg" http://localhost:8080
 
 ## Screenshot for reference
 
-![Screenshot](lab6_screenshot.png)
+![Screenshot](lab_6_screenshot.png)
