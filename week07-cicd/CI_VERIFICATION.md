@@ -17,9 +17,9 @@ URL = https://github.com/SreenathKarthick11/DS5619-MLOps/actions/runs/3570963636
 
 For each job, note pass/fail and how long it took:
 
-- `lint`: pass  - 10 s
-- `unit-test`: pass  - 9 s
-- `integration-test`: pass - 20 s
+- `lint`: pass  - 10 sec
+- `unit-test`: pass  - 9 sec
+- `integration-test`: pass - 20 sec
 
 Total Time taken is 47 sec.
 
@@ -31,5 +31,4 @@ trouble, this is worth 2 sentences for your own future reference — Week 9's
 lab also builds on debugging CI-style failures.)
 
 **ANSWER**:
-I didn't face any issue, when running the workflow. But its good was to
-the feature of `working directory` in yml.
+I didn't face any issue, when running the workflow. But its was good to the feature of `working directory` in yml.
