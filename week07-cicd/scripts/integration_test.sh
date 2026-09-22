@@ -20,7 +20,7 @@ trap cleanup EXIT
 
 echo "Building image..."
 # VERIFY: docker build, tag it $IMAGE_NAME, build context is the repo root (.)
-docker build -t $IMAGE_NAME.
+docker build -t "$IMAGE_NAME" .
 
 echo "Starting container..."
 # VERIFY: docker run, detached (-d), map host port $PORT to container port 8080,
