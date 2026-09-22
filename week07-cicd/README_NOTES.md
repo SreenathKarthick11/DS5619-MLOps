@@ -92,7 +92,7 @@ chmod +x scripts/integration_test.sh
 ./scripts/integration_test.sh
 ```
 > [!NOTE]
-> Test the Github Action is written in [CI Verfication](week07-cicd/CI_VERIFICATION.md).
+> Test the Github Action is written in [CI Verfication](CI_VERIFICATION.md).
 
 The CI pipeline then runs the lint, unit-test, and integration-test jobs through GitHub Actions.
 
