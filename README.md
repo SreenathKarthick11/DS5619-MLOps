@@ -26,3 +26,8 @@
 - Lab work : Containerizie and Serve a Detector
 - Refer    : [Lab details](week06-containerize-serve/README.pdf)
 - Implementation :[Task implementation](week06-containerize-serve/README_NOTES.md)
+
+**Week 7** : CI/CD, Integration Testing & GitOps for ML
+- Lab work : CI/CD Integration Testing
+- Refer    : [Lab details](week07-cicd/README.pdf)
+- Implementation :[Task implementation](week07-cicd/README_NOTES.md)
