@@ -19,13 +19,13 @@ cleanup() {
 trap cleanup EXIT
 
 echo "Building image..."
-# TODO: docker build, tag it $IMAGE_NAME, build context is the repo root (.)
-???
+# VERIFY: docker build, tag it $IMAGE_NAME, build context is the repo root (.)
+docker build -t $IMAGE_NAME.
 
 echo "Starting container..."
-# TODO: docker run, detached (-d), map host port $PORT to container port 8080,
+# VERIFY: docker run, detached (-d), map host port $PORT to container port 8080,
 # name it $CONTAINER_NAME, remove automatically on stop (--rm), image $IMAGE_NAME
-???
+docker run -d --rm -p $PORT:8080 --name $CONTAINER_NAME $IMAGE_NAME
 
 echo "Waiting for /health to respond..."
 ready=0
@@ -44,10 +44,10 @@ fi
 echo "Health check passed."
 
 echo "Testing /detect with a sample fixture image..."
-# TODO: curl -sf -F "image=@data/fixtures/camera_A_daylight/000.jpg" against
+# VERIFY: curl -sf -F "image=@data/fixtures/camera_A_daylight/000.jpg" against
 # http://localhost:${PORT}/detect, save the response body to a variable, and
 # fail (exit 1) if it doesn't contain the string "detections"
-response=$(???)
+response=$(curl -sf -F "image=@data/fixtures/camera_A_daylight/000.jpg" http://localhost:${PORT}/detect)
 if ! echo "$response" | grep -q "detections"; then
   echo "Unexpected /detect response: $response" >&2
   exit 1
