@@ -1,0 +1,63 @@
+# Week 7 — This is copied version of week07-cicd/.github/workflows/ci.yml
+# Note : for a GitHub Action to run , it must be present in the root of the project repo.
+# Hence I have copied the same yml and addedt the working directory to week07-cicd
+
+name: "Week7 : CI"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: week07-cicd
+    steps:
+      - uses: actions/checkout@v4
+      # VERIFY: set up Python (actions/setup-python@v5, pick a python-version)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11" # same as the python version of the local machine
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      # VERIFY: run flake8 against src/
+      - name: Lint
+        run: flake8 src
+
+  unit-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: week07-cicd
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      # VERIFY: run the pytest suite
+      - name: Run unit tests
+        run: pytest -q
+
+  integration-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: week07-cicd
+    # VERIFY: this job should only run if both lint and unit-test succeeded —
+    # add a `needs:` key listing both job names.
+    needs: ["lint", "unit-test"]
+    steps:
+      - uses: actions/checkout@v4
+      # VERIFY: make the script executable and run it
+      - name: Run integration test
+        run: |
+          chmod +x scripts/integration_test.sh
+          ./scripts/integration_test.sh
