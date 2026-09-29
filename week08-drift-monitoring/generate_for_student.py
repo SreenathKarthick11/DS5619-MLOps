@@ -36,9 +36,9 @@ from PIL import Image
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "_shared"))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "_shared"))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
-from student_seed import seed_from_student_id  # noqa: E402
-from generate_synthetic_fixtures import CLASSES, CAMERA_PROFILES, draw_scene  # noqa: E402
-import mock_detector as det  # noqa: E402
+from _shared.student_seed import seed_from_student_id  # noqa: E402
+from _shared.generate_synthetic_fixtures import CLASSES, CAMERA_PROFILES, draw_scene  # noqa: E402
+import src.mock_detector as det  # noqa: E402
 
 N_PER_CAMERA = 20
 N_BINS = 10

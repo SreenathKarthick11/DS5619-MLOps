@@ -2,7 +2,10 @@
 
 **Student ID used with `generate_for_student.py`:**
 <!-- paste the --student-id value you used -->
-
+```
+student_id: 112301042
+seed: 2212745448
+```
 
 ## Drift level vs. expectation
 
