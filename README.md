@@ -31,3 +31,8 @@
 - Lab work : CI/CD Integration Testing
 - Refer    : [Lab details](week07-cicd/README.pdf)
 - Implementation :[Task implementation](week07-cicd/README_NOTES.md)
+
+**Week 8** : Observability: SRE Foundations & ML Drift Monitoring
+- Lab work : Drift Monitoring
+- Refer    : [Lab details](week08-drift-monitoring/README.pdf)
+- Implementation :[Task implementation](week08-drift-monitoring/README_NOTES.md)
