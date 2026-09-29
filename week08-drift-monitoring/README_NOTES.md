@@ -33,9 +33,9 @@ Images are processed in sorted order to ensure deterministic results.
 use the given PSI thresholds:
 
 ```text
-PSI < 0.10       -> none
+PSI < 0.10         -> none
 0.10 <= PSI < 0.25 -> moderate
-PSI >= 0.25      -> significant
+PSI >= 0.25        -> significant
 ```
 
 ### Score Summary
