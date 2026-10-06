@@ -36,3 +36,9 @@
 - Lab work : Drift Monitoring
 - Refer    : [Lab details](week08-drift-monitoring/README.pdf)
 - Implementation :[Task implementation](week08-drift-monitoring/README_NOTES.md)
+
+
+**Week 8** : Orchestration & Scaling: Pipelines to Production Fleets
+- Lab work : Orchestrated Batch Scoring
+- Refer    : [Lab details](week09-orchestrated-batch-scoring/README.pdf)
+- Implementation :[Task implementation](week09-orchestrated-batch-scoring/README_NOTES.md)
