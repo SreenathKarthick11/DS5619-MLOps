@@ -57,8 +57,31 @@ def compute_iou(box_a, box_b):
       4. union_area = area(box_a) + area(box_b) - intersection_area
       5. Return intersection_area / union_area, or 0.0 if union_area is 0.
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY: implement
+    ax1, ay1, aw, ah = box_a
+    bx1, by1, bw, bh = box_b
+
+    ax2, ay2 = ax1 + aw, ay1 + ah
+    bx2, by2 = bx1 + bw, by1 + bh
+
+    inter_x1 = max(ax1, bx1)
+    inter_y1 = max(ay1, by1)
+    inter_x2 = min(ax2, bx2)
+    inter_y2 = min(ay2, by2)
+
+    inter_w = max(0, inter_x2 - inter_x1)
+    inter_h = max(0, inter_y2 - inter_y1)
+
+    intersection_area = inter_w * inter_h
+
+    area_a = max(0, aw) * max(0, ah)
+    area_b = max(0, bw) * max(0, bh)
+    union_area = area_a + area_b - intersection_area
+
+    if union_area == 0:
+        return 0.0
+
+    return intersection_area / union_area
 
 
 # ---------------------------------------------------------------------------
@@ -78,8 +101,16 @@ def match_ground_truth(gt_boxes, detections, iou_threshold=0.3):
     detection CAN count as a match for more than one ground-truth box if it
     happens to overlap both (rare with real data, fine for this audit).
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY: implement
+    matches = []
+
+    for gt_box in gt_boxes:
+        found = any( compute_iou(gt_box, detection.bbox) >= iou_threshold
+            for detection in detections
+        )
+        matches.append(found)
+
+    return matches
 
 
 # ---------------------------------------------------------------------------
@@ -111,9 +142,70 @@ def audit_by_category(coco_path, fixtures_dir, iou_threshold=0.3, transform=None
     lookup from category_id -> category name, before the main loop. Image
     file paths are `os.path.join(fixtures_dir, image["file_name"])`.
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY: implement
+    with open(coco_path, "r", encoding="utf-8") as f:
+        coco_data = json.load(f)
 
+    annotations_by_image = defaultdict(list)
+    for annotation in coco_data["annotations"]:
+        annotations_by_image[annotation["image_id"]].append(annotation)
+
+    category_names = {
+        category["id"]: category["name"]
+        for category in coco_data["categories"]
+    }
+
+    stats = defaultdict(lambda: {"total": 0, "detected": 0})
+
+    # Process every image
+    for image_info in coco_data["images"]:
+        image_path = os.path.join(fixtures_dir, image_info["file_name"])
+
+        with Image.open(image_path) as img:
+            image = img.convert("RGB")
+
+        if transform is not None:
+            image = transform(image)
+
+        detections = det.detect(image)
+
+        annotations = annotations_by_image[image_info["id"]]
+
+        boxes_by_category = defaultdict(list)
+
+        for annotation in annotations:
+            category_id = annotation["category_id"]
+            category_name = category_names[category_id]
+            boxes_by_category[category_name].append(annotation["bbox"])
+
+        for category_name, gt_boxes in boxes_by_category.items():
+            matches = match_ground_truth(
+                gt_boxes,
+                detections,
+                iou_threshold
+            )
+
+            stats[category_name]["total"] += len(gt_boxes)
+            stats[category_name]["detected"] += sum(matches)
+
+    result = {}
+
+    for category_name, counts in stats.items():
+        total = counts["total"]
+
+        if total == 0:
+            continue
+
+        detected = counts["detected"]
+        recall = round(detected / total, 4)
+
+        result[category_name] = {
+            "total": total,
+            "detected": detected,
+            "recall": recall
+        }
+
+    return result
 
 # ---------------------------------------------------------------------------
 # Part 4 — Surface the categories that fall below the bar
@@ -126,5 +218,13 @@ def find_underperforming_categories(category_stats, recall_threshold=0.90):
     whose recall is BELOW recall_threshold, sorted worst-first (lowest
     recall first).
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY: implement
+    underperforming = [
+        (category_name, stats["recall"])
+        for category_name, stats in category_stats.items()
+        if stats["recall"] < recall_threshold
+    ]
+
+    underperforming.sort(key=lambda item: item[1])
+
+    return underperforming
