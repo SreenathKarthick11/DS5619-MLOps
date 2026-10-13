@@ -43,7 +43,7 @@
 - Refer    : [Lab details](week09-orchestrated-batch-scoring/README.pdf)
 - Implementation :[Task implementation](week09-orchestrated-batch-scoring/README_NOTES.md)
 
-**Week 10** : 
-- Lab work  :
-- Refer     : [Lab details]()
-- Implementation : [Task implementation]()
+**Week 10** : Security, Privacy & Responsible AI at Scale
+- Lab work  : Fairness Audit
+- Refer     : [Lab details](/week10-fairness-audit/README.pdf)
+- Implementation : [Task implementation](/week10-fairness-audit/README_NOTES.md)
