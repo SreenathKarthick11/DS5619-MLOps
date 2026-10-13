@@ -38,7 +38,12 @@
 - Implementation :[Task implementation](week08-drift-monitoring/README_NOTES.md)
 
 
-**Week 8** : Orchestration & Scaling: Pipelines to Production Fleets
+**Week 9** : Orchestration & Scaling: Pipelines to Production Fleets
 - Lab work : Orchestrated Batch Scoring
 - Refer    : [Lab details](week09-orchestrated-batch-scoring/README.pdf)
 - Implementation :[Task implementation](week09-orchestrated-batch-scoring/README_NOTES.md)
+
+**Week 10** : 
+- Lab work  :
+- Refer     : [Lab details]()
+- Implementation : [Task implementation]()
