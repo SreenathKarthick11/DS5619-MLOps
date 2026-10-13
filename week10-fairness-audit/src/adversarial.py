@@ -45,8 +45,16 @@ def perturb_image(img, eps):
     function to every value of a single-channel image; Image.merge("RGB",
     ...) puts them back. No per-pixel Python loop is needed.
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY: implement
+    img = img.convert("RGB")
+    red, green, blue = img.split()
+    
+    # Lower red and raise green and blue, clamping to [0, 255]
+    red = red.point(lambda r: max(0, r - eps))
+    green = green.point(lambda g: min(255, g + eps))
+    blue = blue.point(lambda b: min(255, b + eps))
+
+    return Image.merge("RGB", (red, green, blue))
 
 
 # ---------------------------------------------------------------------------
@@ -62,8 +70,20 @@ def audit_under_attack(coco_path, fixtures_dir, eps_values=(0, 10, 20, 30, 40),
     Return {eps: category_stats}, where category_stats is exactly what
     audit_by_category returns. eps=0 is the clean audit.
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY: implement
+    attack_stats = {}
+
+    for eps in eps_values:
+        stats = fa.audit_by_category(
+            coco_path=coco_path,
+            fixtures_dir=fixtures_dir,
+            iou_threshold=iou_threshold,
+            transform=lambda img, e=eps: perturb_image(img, e)
+        )
+
+        attack_stats[eps] = stats
+
+    return attack_stats
 
 
 # ---------------------------------------------------------------------------
@@ -83,5 +103,18 @@ def find_most_fragile(attack_stats, eps, top_k=3):
     change with the student ID. run_pipeline.py also reports the classes with
     the lowest ABSOLUTE recall under attack; compare the two in NOTES.md.
     """
-    # TODO: implement
-    raise NotImplementedError
+    # VERIFY: implement
+    clean_stats = attack_stats[0]
+    attacked_stats = attack_stats[eps]
+    category_drops = []
+
+    for category in clean_stats:
+        clean_recall = clean_stats[category]["recall"]
+        attacked_recall = attacked_stats[category]["recall"]
+
+        recall_drop = round(clean_recall - attacked_recall, 4)
+        category_drops.append((category, recall_drop))
+
+    category_drops.sort(key=lambda item: (-item[1], item[0]))
+
+    return category_drops[:top_k]
