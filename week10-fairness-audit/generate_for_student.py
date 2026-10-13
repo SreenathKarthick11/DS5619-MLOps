@@ -38,8 +38,8 @@ from PIL import Image, ImageDraw
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "_shared"))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "_shared"))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "src"))
-from student_seed import seed_from_student_id  # noqa: E402
-import mock_detector as det  # noqa: E402
+from _shared.student_seed import seed_from_student_id  # noqa: E402
+import src.mock_detector as det  # noqa: E402
 
 N_PER_CAMERA = 30
 IOU_THRESHOLD = 0.3
