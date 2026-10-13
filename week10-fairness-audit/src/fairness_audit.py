@@ -57,7 +57,7 @@ def compute_iou(box_a, box_b):
       4. union_area = area(box_a) + area(box_b) - intersection_area
       5. Return intersection_area / union_area, or 0.0 if union_area is 0.
     """
-    # VERIFY: implement
+    # VERIFIED: implement
     ax1, ay1, aw, ah = box_a
     bx1, by1, bw, bh = box_b
 
@@ -101,7 +101,7 @@ def match_ground_truth(gt_boxes, detections, iou_threshold=0.3):
     detection CAN count as a match for more than one ground-truth box if it
     happens to overlap both (rare with real data, fine for this audit).
     """
-    # VERIFY: implement
+    # VERIFIED: implement
     matches = []
 
     for gt_box in gt_boxes:
@@ -142,7 +142,7 @@ def audit_by_category(coco_path, fixtures_dir, iou_threshold=0.3, transform=None
     lookup from category_id -> category name, before the main loop. Image
     file paths are `os.path.join(fixtures_dir, image["file_name"])`.
     """
-    # VERIFY: implement
+    # VERIFIED: implement
     with open(coco_path, "r", encoding="utf-8") as f:
         coco_data = json.load(f)
 
@@ -218,7 +218,7 @@ def find_underperforming_categories(category_stats, recall_threshold=0.90):
     whose recall is BELOW recall_threshold, sorted worst-first (lowest
     recall first).
     """
-    # VERIFY: implement
+    # VERIFIED: implement
     underperforming = [
         (category_name, stats["recall"])
         for category_name, stats in category_stats.items()
