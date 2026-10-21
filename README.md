@@ -47,3 +47,8 @@
 - Lab work  : Fairness Audit
 - Refer     : [Lab details](/week10-fairness-audit/README.pdf)
 - Implementation : [Task implementation](/week10-fairness-audit/README_NOTES.md)
+
+**Week 11** : Model Compression
+- Lab work  : Model Compression
+- Refer     : [Lab details](/week11-model-compression/README.pdf)
+- Implementation : [Task implementaion](/week11-model-compression/README_NOTES.md)
