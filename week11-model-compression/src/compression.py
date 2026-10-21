@@ -44,7 +44,7 @@ def model_size_bytes(weights, dtype_bytes):
     stored using `dtype_bytes` bytes each (4 for FP32, 2 for FP16, 1 for
     INT8 — this week's "bits per parameter" framing, applied literally).
     """
-    # VERIFY: implement
+    # VERIFIED: implement
     return len(weights) * dtype_bytes
 
 
@@ -65,7 +65,7 @@ def prune_weights(weights, sparsity):
       3. Return a copy of `weights` with those indices set to 0.0 (don't
          mutate the input list).
     """
-    # VERIFY: implement
+    # VERIFIED: implement
     n_prune = int(sparsity * len(weights))
     indices = sorted(range(len(weights)),key=lambda i: abs(weights[i]))[:n_prune]
     pruned = list(weights)
@@ -92,7 +92,7 @@ def sparse_coo_size_bytes(weights, value_bytes=4, index_bytes=4):
     while enough weights are zero to pay for the extra index on every
     survivor.
     """
-    # VERIFY: implement
+    # VERIFIED: implement
     nonzero_count = sum(1 for w in weights if w != 0.0)
     return nonzero_count * (value_bytes + index_bytes)
 
@@ -121,7 +121,7 @@ def quantize_int8(weights):
 
     (dequantize_int8, given above, reverses this: w_approx = q * scale.)
     """
-    # VERIFY: implement
+    # VERIFIED: implement
     if not weights:
         return [], 1.0
 
@@ -164,7 +164,7 @@ def benchmark_model(label, weights, eval_examples, dtype_bytes, n_latency_reps=5
     time.perf_counter() before/after each pass), sum the per-pass times,
     divide by n_latency_reps, and convert seconds -> milliseconds.
     """
-    # VERIFY: implement
+    # VERIFIED: implement
     correct = 0
 
     for example in eval_examples:
